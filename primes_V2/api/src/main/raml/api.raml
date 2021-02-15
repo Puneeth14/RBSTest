@@ -1,0 +1,43 @@
+#%RAML 1.0
+
+title: Primes API
+baseUri: http://primes.rbs.examples.com
+version: v1
+
+types:
+   PrimesResponse:
+      type: object
+      properties:
+        Initial:
+            type: integer
+            description: |
+              The final item in the range to calculate prime numbers. The range starts at 2.
+            example: 10
+            minimum: 2
+            maximum: 10000000
+        Primes:
+          type: array
+          items: integer
+          description: |
+            The prime numbers between 2 and the value passed as a path argument, the Initial.
+          example: [2,3,5,7]
+
+/primes:
+  /{limit}:
+    uriParameters:
+     limit:
+        type: integer
+        description: The final item in the range to calculate prime numbers.
+        example: 10
+        minimum: 2
+        maximum: 1000000
+        required: true
+    get:
+      description: The prime numbers from 1 to the rangeLimit
+      responses:
+        200:
+          body:
+            application/json:
+              type: PrimesResponse
+              example:
+                !include examples/200-response-primes.json
